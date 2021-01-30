@@ -1,6 +1,8 @@
 package com.example.flickster;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,12 +10,14 @@ import android.util.Log;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.RequestParams;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.example.flickster.adapters.MovieAdapter;
 import com.example.flickster.models.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Headers;
@@ -29,10 +33,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        RecyclerView rvMovies = findViewById(R.id.rvMovies);
+        movies = new ArrayList<Movie>();
 
-        //RequestParams params = new RequestParams();
-        //String link = "https://api.themoviedb.org/3/movie/now_playing";
-        //params.put("api_key", "a07e22bc18f5cb106bfe4cc1f83ad8ed");
+        // Create the adapter
+        MovieAdapter movieAdapter = new MovieAdapter(this, movies);
+
+        // Set the adapter on the recycler view
+        rvMovies.setAdapter(movieAdapter);
+
+        // Set a Layout Manager
+        rvMovies.setLayoutManager(new LinearLayoutManager(this));
+
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(NOW_PLAYING_URL, new JsonHttpResponseHandler() {
             @Override
@@ -43,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONArray results = jsonObject.getJSONArray("results");
                     Log.i(TAG, "Results: " + results.toString());
-                    movies = Movie.fromJsonArray(results);
+                    movies.addAll(Movie.fromJsonArray(results));
+                    movieAdapter.notifyDataSetChanged();
                     Log.i(TAG, "Movies: " + movies.size());
                 } catch (JSONException e) {
                     Log.e(TAG, "Hit json Exception", e);
