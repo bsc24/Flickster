@@ -103,14 +103,22 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvRating.setText("Rating: " + movie.getRating());
             tvOverview.setText(movie.getOverview());
             String imageUrl;
+            int height = 0;
 
-            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 imageUrl = movie.getBackdropPath();
-            else {
+                height = 800;
+            } else {
                 imageUrl = movie.getPosterPath();
+                height = 470;
             }
 
-            Glide.with(context).load(imageUrl).into(ivPoster);
+            Glide.with(context)
+                    .load(imageUrl)
+                    //.placeholder(R.drawable.ic_launcher_background)
+                    //.override(1600, 470)
+                    //.fitCenter()
+                    .into(ivPoster);
         }
     }
 
@@ -125,7 +133,14 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public void bind(Movie movie) {
             String imageUrl = movie.getBackdropPath();
-            Glide.with(context).load(imageUrl).into(ivPoster);
+            Glide.with(context)
+                    .load(imageUrl)
+                    //.placeholder(R.drawable.ic_launcher_background)
+                    //.override(1200, 605)
+                    //.fitCenter()
+                    .into(ivPoster);
         }
     }
+
+
 }
