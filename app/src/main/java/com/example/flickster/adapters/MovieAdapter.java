@@ -38,16 +38,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Log.d(TAG, "onCreateViewHolder");
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        switch(viewType) {
-            case MOVIE:
-                View v1 = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
-                return new MovieViewHolder(v1);
-            case POPULAR_MOVIE:
-                View v2 = LayoutInflater.from(context).inflate(R.layout.item_popular_movie, parent, false);
-                return new MovieViewHolder(v2);
-            default:
-                Log.e(TAG, "Invalid viewType value provided: " + viewType);
-                return null;
+        if (viewType == MOVIE || context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            View v1 = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
+            return new MovieViewHolder(v1);
+        } else if (viewType == POPULAR_MOVIE) {
+            View v2 = LayoutInflater.from(context).inflate(R.layout.item_popular_movie, parent, false);
+            return new MovieViewHolder(v2);
+        } else {
+            Log.e(TAG, "Invalid viewType value provided: " + viewType);
+            return null;
         }
     }
 
@@ -97,14 +96,33 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             tvOverview.setText(movie.getOverview());
             String imageUrl;
 
-            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE || movie.getRating() > 5)
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
                 imageUrl = movie.getBackdropPath();
             else {
-                imageUrl = movie.getPosterPath();
-
+                if (movie.getRating() > 5)
+                    imageUrl = movie.getBackdropPath();
+                else
+                    imageUrl = movie.getPosterPath();
             }
 
             Glide.with(context).load(imageUrl).into(ivPoster);
         }
     }
+
+    /*
+    public class PopularMovieViewHolder extends RecyclerView.ViewHolder {
+        ImageView ivPoster;
+
+        public PopularMovieViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ivPoster = itemView.findViewById(R.id.ivPoster);
+        }
+
+        public void bind(Movie movie) {
+            String imageUrl = movie.getBackdropPath();
+            Glide.with(context).load(imageUrl).into(ivPoster);
+        }
+    }
+
+     */
 }
