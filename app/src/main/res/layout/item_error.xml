@@ -35,31 +35,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/ivPoster"
+        android:text="Movie Title"
         android:textSize="24sp"
-        android:transitionName="title"
-        tools:text="Movie Title" />
-
-    <TextView
-        android:id="@+id/tvRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_below="@+id/tvTitle"
-        android:layout_toEndOf="@id/ivPoster"
-        android:textSize="20sp"
-        android:transitionName="rating"
-        tools:text="Rating: N.n" />
+        android:transitionName="title" />
 
     <TextView
         android:id="@+id/tvOverview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvRating"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="7dp"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="-2dp"
-        android:layout_marginBottom="7dp"
         android:layout_toEndOf="@id/ivPoster"
-        tools:text="Movie Description, probably an actual one will be quite lengthy. As a result, I've typed up this hubbub to really get a feel for how it may look with a bit more text." />
+        android:text="Movie Description, probably an actual one will be quite lengthy. As a result, I've typed up this hubbub to really get a feel for how it may look with a bit more text." />
 </RelativeLayout>

@@ -18,9 +18,10 @@ import com.example.flickster.models.Movie;
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     public static final String TAG = "MovieAdapter";
+    private static final int MOVIE = 0, POPULAR_MOVIE = 1;
 
     Context context;
     List<Movie> movies;
@@ -33,15 +34,26 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     // Usually involves inflating a layout from XML and returning the holder
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder");
-        View movieView = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
-        return new ViewHolder(movieView);
+        RecyclerView.ViewHolder viewHolder;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        switch(viewType) {
+            case MOVIE:
+                View v1 = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
+                return new MovieViewHolder(v1);
+            case POPULAR_MOVIE:
+                View v2 = LayoutInflater.from(context).inflate(R.layout.item_popular_movie, parent, false);
+                return new MovieViewHolder(v2);
+            default:
+                Log.e(TAG, "Invalid viewType value provided: " + viewType);
+                return null;
+        }
     }
 
     // Involves populating the data into the item through holder
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder " + position);
         // Get the movie at the passed in position
         Movie movie = movies.get(position);
@@ -55,28 +67,42 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         return movies.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemViewType(int position) {
+        double rating = movies.get(position).getRating();
+        if (rating > 5)
+            return POPULAR_MOVIE;
+        else
+            return MOVIE;
+    }
+
+    public class MovieViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvTitle;
+        TextView tvRating;
         TextView tvOverview;
         ImageView ivPoster;
 
-        public ViewHolder(@NonNull View itemView) {
+        public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvRating = itemView.findViewById(R.id.tvRating);
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
         }
 
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
+            tvRating.setText("Rating: " + movie.getRating());
             tvOverview.setText(movie.getOverview());
             String imageUrl;
 
-            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE || movie.getRating() > 5)
                 imageUrl = movie.getBackdropPath();
-            else
+            else {
                 imageUrl = movie.getPosterPath();
+
+            }
 
             Glide.with(context).load(imageUrl).into(ivPoster);
         }
