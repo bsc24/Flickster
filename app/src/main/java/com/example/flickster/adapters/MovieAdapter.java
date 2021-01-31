@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.flickster.R;
 import com.example.flickster.models.Movie;
 
@@ -22,6 +23,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public static final String TAG = "MovieAdapter";
     private static final int MOVIE = 0, POPULAR_MOVIE = 1;
+    private static final int ROUNDING_RADIUS = 50;
 
     Context context;
     List<Movie> movies;
@@ -115,9 +117,10 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             Glide.with(context)
                     .load(imageUrl)
-                    //.placeholder(R.drawable.ic_launcher_background)
-                    //.override(1600, 470)
-                    //.fitCenter()
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .override(1600, 470)
+                    .fitCenter()
+                    .transform(new RoundedCorners(ROUNDING_RADIUS))
                     .into(ivPoster);
         }
     }
@@ -135,9 +138,10 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             String imageUrl = movie.getBackdropPath();
             Glide.with(context)
                     .load(imageUrl)
-                    //.placeholder(R.drawable.ic_launcher_background)
-                    //.override(1200, 605)
-                    //.fitCenter()
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .override(1200, 605)
+                    .fitCenter()
+                    .transform(new RoundedCorners(ROUNDING_RADIUS))
                     .into(ivPoster);
         }
     }

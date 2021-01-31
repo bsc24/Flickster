@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rlMovies"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
 
     <ImageView
         android:id="@+id/ivPoster"
@@ -26,6 +28,8 @@
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/ivPoster"
         android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
         android:transitionName="title"
         tools:text="Movie Title" />
 
@@ -36,7 +40,8 @@
         android:layout_marginStart="5dp"
         android:layout_below="@+id/tvTitle"
         android:layout_toEndOf="@id/ivPoster"
-        android:textSize="20sp"
+        android:textSize="15sp"
+        android:textColor="@color/text"
         android:transitionName="rating"
         tools:text="Rating: N.n" />
 
@@ -48,5 +53,6 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@id/ivPoster"
+        android:textColor="@color/text"
         tools:text="Movie Description, probably an actual one will be quite lengthy. As a result, I've typed up this hubbub to really get a feel for how it may look with a bit more text." />
 </RelativeLayout>
