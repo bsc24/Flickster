@@ -32,6 +32,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ### Notes
 Describe any challenges encountered while building the app.
 - Figuring out the placeholder image was a little bit tricky because my first time trying to implement it caused it to change the size of the images. I ended up using override() to hard code the width and height.
+- I didn't really realize I spelled the name wrong until I was halfway through the project and then I just couldn't rename it
 
 ### Open-source libraries used
 
