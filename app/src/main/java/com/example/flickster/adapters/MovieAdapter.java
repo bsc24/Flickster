@@ -18,7 +18,7 @@ import com.example.flickster.models.Movie;
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public static final String TAG = "MovieAdapter";
     private static final int MOVIE = 0, POPULAR_MOVIE = 1;
@@ -34,30 +34,38 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     // Usually involves inflating a layout from XML and returning the holder
     @NonNull
     @Override
-    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder");
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (viewType == MOVIE || context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            View v1 = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
-            return new MovieViewHolder(v1);
-        } else if (viewType == POPULAR_MOVIE) {
-            View v2 = LayoutInflater.from(context).inflate(R.layout.item_popular_movie, parent, false);
-            return new MovieViewHolder(v2);
-        } else {
+            View v1 = inflater.inflate(R.layout.item_movie, parent, false);
+            viewHolder =  new MovieViewHolder(v1);
+        } else {    //  if (viewType == POPULAR_MOVIE)
+            View v2 = inflater.inflate(R.layout.item_popular_movie, parent, false);
+            viewHolder = new PopularMovieViewHolder(v2);
+        } /*else {
             Log.e(TAG, "Invalid viewType value provided: " + viewType);
             return null;
-        }
+        }*/
+        return viewHolder;
     }
 
     // Involves populating the data into the item through holder
     @Override
-    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder " + position);
         // Get the movie at the passed in position
         Movie movie = movies.get(position);
         // Bind the movie data into the VH
-        holder.bind(movie);
+        if (holder.getItemViewType() == MOVIE || context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            MovieViewHolder mvh = (MovieViewHolder) holder;     // Cast as a MovieViewHolder
+            mvh.bind(movie);
+        } else {    //  if (viewType == POPULAR_MOVIE)
+            PopularMovieViewHolder pmvh = (PopularMovieViewHolder) holder;
+            pmvh.bind(movie);
+        }
+        //holder.bind(movie);
     }
 
     // Returns total count of items in the list
@@ -99,17 +107,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
                 imageUrl = movie.getBackdropPath();
             else {
-                if (movie.getRating() > 5)
-                    imageUrl = movie.getBackdropPath();
-                else
-                    imageUrl = movie.getPosterPath();
+                imageUrl = movie.getPosterPath();
             }
 
             Glide.with(context).load(imageUrl).into(ivPoster);
         }
     }
 
-    /*
+
     public class PopularMovieViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPoster;
 
@@ -123,6 +128,4 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             Glide.with(context).load(imageUrl).into(ivPoster);
         }
     }
-
-     */
 }
