@@ -62,7 +62,10 @@ public class DetailActivity extends YouTubeBaseActivity {
                         return;
                     String youtubeKey = results.getJSONObject(0).getString("key");
                     Log.d(TAG, "youtubeKey: " + youtubeKey);
-                    initializeYoutube(youtubeKey);
+                    boolean isPopular = false;
+                    if (movie.getRating() > 5)
+                        isPopular = true;
+                    initializeYoutube(youtubeKey, isPopular);
                 } catch (JSONException e) {
                     Log.e(TAG, "Hit json Exception", e);
                     e.printStackTrace();
@@ -76,12 +79,15 @@ public class DetailActivity extends YouTubeBaseActivity {
         });
     }
 
-    private void initializeYoutube(final String youtubeKey) {
+    private void initializeYoutube(final String youtubeKey, boolean isPopular) {
         youtubePlayerView.initialize(YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 Log.d(TAG, "onInitializationSuccess");
-                youTubePlayer.cueVideo(youtubeKey);
+                if (isPopular)
+                    youTubePlayer.loadVideo(youtubeKey);
+                else
+                    youTubePlayer.cueVideo(youtubeKey);
             }
 
             @Override
