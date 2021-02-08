@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetailActivity"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <com.google.android.youtube.player.YouTubePlayerView
@@ -16,8 +17,12 @@
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:text="TextView"
         android:textSize="30sp"
+        android:textColor="@color/white"
+        android:transitionName="title"
         tools:text="Movie Title" />
 
     <RatingBar
@@ -33,5 +38,9 @@
         android:id="@+id/tvOverview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:textColor="@color/text"
+        android:transitionName="overview"
         tools:text="Movie Description, probably an actual one will be quite lengthy. As a result, I've typed up this hubbub to really get a feel for how it may look with a bit more text." />
 </LinearLayout>

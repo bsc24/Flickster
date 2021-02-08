@@ -54,5 +54,6 @@
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@id/ivPoster"
         android:textColor="@color/text"
+        android:transitionName="overview"
         tools:text="Movie Description, probably an actual one will be quite lengthy. As a result, I've typed up this hubbub to really get a feel for how it may look with a bit more text." />
 </RelativeLayout>
