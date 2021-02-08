@@ -1,21 +1,27 @@
 package com.example.flickster.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.flickster.DetailActivity;
 import com.example.flickster.R;
 import com.example.flickster.models.Movie;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -87,6 +93,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
 
+        RelativeLayout container;
         TextView tvTitle;
         TextView tvRating;
         TextView tvOverview;
@@ -98,6 +105,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvRating = itemView.findViewById(R.id.tvRating);
             tvOverview = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
+            container = itemView.findViewById(R.id.rlMovies);
         }
 
         public void bind(Movie movie) {
@@ -122,16 +130,29 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     .fitCenter()
                     .transform(new RoundedCorners(ROUNDING_RADIUS))
                     .into(ivPoster);
+
+            // Register click listener on the whole row
+            container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Navigate to a new activity on tap
+                    Intent i = new Intent(context, DetailActivity.class);
+                    i.putExtra("movie", Parcels.wrap(movie));
+                    context.startActivity(i);
+                }
+            });
         }
     }
 
 
     public class PopularMovieViewHolder extends RecyclerView.ViewHolder {
+        RelativeLayout container;
         ImageView ivPoster;
 
         public PopularMovieViewHolder(@NonNull View itemView) {
             super(itemView);
             ivPoster = itemView.findViewById(R.id.ivPoster);
+            container = itemView.findViewById(R.id.rlMovies);
         }
 
         public void bind(Movie movie) {
@@ -143,6 +164,16 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     .fitCenter()
                     .transform(new RoundedCorners(ROUNDING_RADIUS))
                     .into(ivPoster);
+            // Register click listener on the whole row
+            container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Navigate to a new activity on tap
+                    Intent i = new Intent(context, DetailActivity.class);
+                    i.putExtra("movie", Parcels.wrap(movie));
+                    context.startActivity(i);
+                }
+            });
         }
     }
 
